@@ -9,6 +9,10 @@ language: node_js
 node_js:
   - stable
 
+cache:
+  directories:
+    - "node_modules"  
+
 before_deploy: 
   - curl -L https://github.com/a8m/envsubst/releases/download/v1.0.0/envsubst-`uname -s`-`uname -m` -o envsubst
   - chmod +x envsubst
