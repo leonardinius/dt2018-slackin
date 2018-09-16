@@ -11,8 +11,6 @@ RUN chmod +x ./bin/slackin
 RUN yarn
 
 CMD ./bin/slackin \
-  --coc "${SLACK_COC_URL}" \
-  --port ${PORT:-3000} \
   ${SLACK_SUBDOMAIN} \
   ${SLACK_API_TOKEN} \
   ${GOOGLE_CAPTCHA_SECRET} \
