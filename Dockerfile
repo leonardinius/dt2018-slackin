@@ -1,13 +1,20 @@
-FROM node:slim
+FROM node:8.12.0-alpine
 
-ENV PORT 3000
-
-ADD . /srv/www
-
-WORKDIR /srv/www
-
-RUN npm install --unsafe-perm
+LABEL maintainer="Leo <leonidms@gmail.com>"
 
 EXPOSE 3000
+ENV NPM_CONFIG_LOGLEVEL info
 
-CMD ./bin/slackin --coc "$SLACK_COC" --channels "$SLACK_CHANNELS" --port $PORT $SLACK_SUBDOMAIN $SLACK_API_TOKEN $GOOGLE_CAPTCHA_SECRET $GOOGLE_CAPTCHA_SITEKEY
+WORKDIR /app
+COPY . /app
+RUN chmod +x ./bin/slackin
+RUN yarn
+
+CMD ./bin/slackin \
+  --coc "${SLACK_COC_URL}" \
+  --port ${PORT:-3000} \
+  ${SLACK_SUBDOMAIN} \
+  ${SLACK_API_TOKEN} \
+  ${GOOGLE_CAPTCHA_SECRET} \
+  ${GOOGLE_CAPTCHA_SITEKEY}
+
