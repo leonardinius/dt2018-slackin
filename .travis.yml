@@ -29,7 +29,7 @@ deploy:
   bucket_name: "dt2018-slackin"
 
   skip_cleanup: true
-  zip_file: dt2018-slackin
+  zip_file: dt2018-slackin.zip
 
   on:
     branch: master
