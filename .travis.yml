@@ -1,39 +1,30 @@
-## .travis.yml secure parameters set in the travis admin panel
-# - SLACK_API_TOKEN
-# - GOOGLE_CAPTCHA_SECRET
-# - GOOGLE_CAPTCHA_SITEKEY
-# - DEPLOY_AWS_ACCESS_KEY_ID
-# - DEPLOY_AWS_SECRET_ACCESS_KEY
-
 language: node_js
 node_js:
-  - stable
-
+- stable
 cache:
   directories:
-    - "node_modules"  
-
-before_deploy: 
-  - curl -L https://github.com/a8m/envsubst/releases/download/v1.0.0/envsubst-`uname -s`-`uname -m` -o envsubst
-  - chmod +x envsubst
-  - ./envsubst -no-unset -no-empty < .env.example > .env
-  - zip -q -r dt2018-slackin.zip . --exclude node_modules\* .elasticbeanstalk\* .git\*
-
+  - node_modules
+before_deploy:
+- curl -L https://github.com/a8m/envsubst/releases/download/v1.0.0/envsubst-`uname
+  -s`-`uname -m` -o envsubst
+- chmod +x envsubst
+- "./envsubst -no-unset -no-empty < .env.example > .env"
+- zip -q -r dt2018-slackin.zip . --exclude node_modules\* .elasticbeanstalk\* .git\*
 deploy:
   provider: elasticbeanstalk
-  access_key_id: ${DEPLOY_AWS_ACCESS_KEY_ID}
-  secret_access_key: ${DEPLOY_AWS_SECRET_ACCESS_KEY}
-  region: "eu-west-1"
-  app: "dt2018"
-  env: "gh-dt2018-slackin"
-  bucket_name: "dt2018-slackin"
-
+  access_key_id: "${DEPLOY_AWS_ACCESS_KEY_ID}"
+  secret_access_key: "${DEPLOY_AWS_SECRET_ACCESS_KEY}"
+  region: eu-west-1
+  app: dt2018
+  env: gh-dt2018-slackin
+  bucket_name: dt2018-slackin
   skip_cleanup: true
   zip_file: dt2018-slackin.zip
-
   on:
     branch: master
-
 after_deploy:
-  - rm dt2018-slackin
-  - rm .env
+- rm dt2018-slackin
+- rm .env
+notifications:
+  slack:
+    secure: JaoO/Z+alY6jn8ZudY47j9g+iGWxgxgClYbotUiiiLVgXrSpuUsu4bOtQePfP3YDB6a7rfCadJgeau3KXPsrJ7JTpe/5MS8GuzfGUudY69B9yKLZW5Hom+Sy9AshUUJoy9dpFdFtGMxd/v9p19rUznlGrlqw6+JtaS/2UJLxhre1sMBwtjL7R2ga9Yva4dbqEvO1XhEai4rgDQVvqRRoafqRiStCsiH5zQ6dePMzqDRnVS54MMZShYmDOYQCZHc5VrE4uAhnLHKzxQncXOvoGXhU37rXsGVabCbtej8/756czQ8TLb4X5/7q9fVZMJ8YfFGXjY8tWLc1yrV+EcfSsgcRZlOxK9wfUSWc0UHTSu5FsMUg/43+N4b54N7z17JtElqPQRuAxER++bpgnQzqMixEGLlCFy6SSYoGVS6SQhnVJ+0/PV8kbXYAoOH9eYM9CRRgPzE3iAybexkPsD1gnXXQdcyQXdrWUVCsl/nXmE2gJemdbIyPVVUQGG2nOMVmjlC/KYKyu2l43ijsG04aUBtz+Qr+PbbRoI2X6Uhg6JbS5wmJ6vdvlPjQksBtQ5GagOY7jiyIPrwPzLMgl/6B6QQ9NMxYWHRTbSgclzPuzIstr7wTGKsgKQ1ZGgOYWrI66NghMmhwS4DmPW+vCmP7AnoTCJCl1tSXrlE4WJjFWIQ=
